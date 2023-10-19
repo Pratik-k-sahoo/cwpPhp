@@ -1,0 +1,62 @@
+<?php
+
+//Connecting to the database
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "contactus";
+
+//Create a connection
+$conn = mysqli_connect($servername, $username, $password, $database);
+
+//Die if connection was not successful
+if(!$conn){
+    die("Sorry we failed to connect: " . mysqli_connect_error());
+}else{
+    echo "Connection was successful <br>";
+}
+
+$sql = "SELECT * FROM `contacts` WHERE `name`='Pratik'";
+$result = mysqli_query($conn, $sql);
+
+//Usage of WHERE clause to fetch data from the database
+$num = mysqli_num_rows($result);
+echo $num;
+echo " records found in the database. <br>";
+
+if($num > 0){
+    // $row = mysqli_fetch_assoc($result);   //mysqli_fetch_assoc()-> returns the next row and till null comes
+    // echo var_dump($row);
+    // echo "<br>";
+    // $row = mysqli_fetch_assoc($result);
+    // echo var_dump($row);
+    // echo "<br>";
+    // $row = mysqli_fetch_assoc($result);
+    // echo var_dump($row);
+    // echo "<br>";
+
+    //We can fetch in a better way using the while loop
+    // while($row = mysqli_fetch_assoc($result)){
+    //     echo var_dump($row);
+    //     echo "<br>";
+    // }
+
+    //With a message means using elements from array
+    while($row = mysqli_fetch_assoc($result)){
+        echo $row['sno'] . ". Hello " . $row['name'] . '! Welcome to the world of concern. Your concern i.e. "' . $row['concern'] . '" on ' . $row['date'] . " has been resolved successfully.";
+        echo "<br>";
+    }
+}
+
+//Usage of WHERE clause to update data
+$sql = "UPDATE `contacts` SET `name` = 'PRATIK K SAHOO' WHERE `sno` = 1";
+$result = mysqli_query($conn, $sql);
+$aff = mysqli_affected_rows($conn);
+echo "Affected rows are: $aff <br>";
+
+if($result){
+    echo "Updated the record successfully";
+}else{
+    echo "Can't updated the record successfully because of this error -> " . mysqli_error($conn);
+}
+?>
